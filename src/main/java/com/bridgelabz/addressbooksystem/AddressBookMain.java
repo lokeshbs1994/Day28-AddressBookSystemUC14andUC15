@@ -12,13 +12,12 @@ import java.util.Scanner;
 public class AddressBookMain {
     private static List<AddressBook> addressBooks = new LinkedList<AddressBook>();
     private static String[] addressBookName = new String[10];
-    private static int numOfBooks = 0;
+    private static int  numOfBooks =0;
     public static AddressBookFileIO addressBookFileIO = new AddressBookFileIO();
 
     private boolean checkName(String name) {
-        for (int i = 0; i < addressBooks.size(); i++) {
-            if (addressBookName[i].equals(name))
-                return true;
+        for(int i=0;i<addressBooks.size();i++) {
+            if(addressBookName[i].equals(name)) return true;
         }
         return false;
     }
@@ -27,7 +26,7 @@ public class AddressBookMain {
         Scanner sc = new Scanner(System.in);
         int option = 0;
         boolean exit = true;
-        while (exit) {
+        while(exit) {
             System.out.println("Select option 1: add user.  2: edit existing user.  "
                     + "3: display all users 4:Delete contact. 5:seach userby city "
                     + "6: search user by state 7:view by city 8:view by state"
@@ -36,13 +35,15 @@ public class AddressBookMain {
                     + "13: Write to file"
                     + "14. Read from file"
                     + "15. Write to CSV"
-                    + "16. Read from CSV");
-            option = sc.nextInt();
-            switch (option) {
-                case 1:
+                    + "16. Read from CSV"
+                    + "17. Write to JSON"
+                    + "18. Read from JSON");
+            option  = sc.nextInt();
+            switch(option) {
+                case 1 :
                     addressBook.addContacts();
                     break;
-                case 2:
+                case 2 :
                     System.out.println("Enter the first name to edit");
                     addressBook.edit();
                     break;
@@ -60,22 +61,22 @@ public class AddressBookMain {
                     System.out.println("enter the first name to search for city");
                     String firstName = sc.next();
 
-                    addressBook.searchByCity(cityName, firstName);
+                    addressBook.searchByCity(cityName,firstName);
                 case 6:
                     System.out.println("enter the name of the city");
                     String stateName = sc.next();
                     System.out.println("enter the first name to search for city");
                     String firstName1 = sc.next();
-                    addressBook.searchByState(stateName, firstName1);
+                    addressBook.searchByState(stateName,firstName1);
                     break;
                 case 7:
                     System.out.println("enter the city name");
-                    String city = sc.next();
+                    String city  = sc.next();
                     addressBook.personsInCity(city);
                     break;
                 case 8:
                     System.out.println("enter the state name");
-                    String state = sc.next();
+                    String state  = sc.next();
                     addressBook.personsInState(state);
                     break;
                 case 9:
@@ -97,16 +98,34 @@ public class AddressBookMain {
                     List<String> listaddressBook = addressBook.read();
                     break;
                 case 15:
-                    try {
+                    try
+                    {
                         addressBook.writeDataToCSV();
-                    } catch (IOException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
+                    }catch (IOException | CsvRequiredFieldEmptyException | CsvDataTypeMismatchException e) {
                         e.printStackTrace();
                     }
                     break;
                 case 16:
                     try {
                         addressBook.readDataFromCSV();
+                    }catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                case 17:
+                    try {
+                        addressBook.writeDataToJson();
                     } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    break;
+
+                case 18:
+                    try {
+                        addressBook.readDataFromJson();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     break;
@@ -124,16 +143,16 @@ public class AddressBookMain {
         Scanner sc = new Scanner(System.in);
 
         AddressBook currentBook;
-        int choice = 0;
+        int choice =0;
         boolean exit1 = true;
-        while (exit1) {
+        while(exit1) {
             System.out.println("Select option 1:Add address Book 2:open Address Book 3:exit");
             choice = sc.nextInt();
-            switch (choice) {
+            switch(choice) {
                 case 1:
                     System.out.println("Enter the address book name");
                     String name = sc.next();
-                    currentBook = new AddressBook();
+                    currentBook  = new AddressBook();
                     currentBook.setAdressBookName(name);
                     addressBooks.add(currentBook);
 
@@ -142,18 +161,17 @@ public class AddressBookMain {
                     break;
                 case 2:
                     System.out.println("The Address books available :");
-                    for (int i = 0; i < numOfBooks; i++) {
+                    for(int i=0;i<numOfBooks;i++) {
                         System.out.println(addressBookName[i]);
                     }
                     System.out.println("Enter the address book name");
                     String bookName = sc.next();
-                    int i = 0;
-                    for (i = 0; i < numOfBooks; i++) {
-                        if (addressBookName[i].equals(bookName))
-                            break;
+                    int i =0;
+                    for(i=0;i<numOfBooks;i++) {
+                        if(addressBookName[i].equals(bookName)) break;
                     }
 
-                    if (i == numOfBooks) {
+                    if(i == numOfBooks) {
                         System.out.println("name Not Found");
                         break;
                     }
