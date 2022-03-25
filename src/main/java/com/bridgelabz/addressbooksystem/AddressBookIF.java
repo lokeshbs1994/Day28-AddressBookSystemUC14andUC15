@@ -5,6 +5,7 @@ import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 
 import java.io.IOException;
 
+// for reference to see all methods used
 public interface AddressBookIF {
     public void addContacts();
     public void edit();

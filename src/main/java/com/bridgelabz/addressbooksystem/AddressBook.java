@@ -22,76 +22,84 @@ import java.util.stream.Collectors;
 
 public class AddressBook {
     ArrayList<ContactPerson> contactBook = new ArrayList<ContactPerson>();
-    public  HashMap<String, ArrayList<ContactPerson>> personsByCity = new HashMap<String, ArrayList<ContactPerson>>();
-    public  HashMap<String, ArrayList<ContactPerson>> personsByState = new HashMap<String, ArrayList<ContactPerson>>();
+    public HashMap<String, ArrayList<ContactPerson>> personsByCity = new HashMap<String, ArrayList<ContactPerson>>();
+    public HashMap<String, ArrayList<ContactPerson>> personsByState = new HashMap<String, ArrayList<ContactPerson>>();
 
     Scanner sc = new Scanner(System.in);
     private static int numberOfConatcts = 0;
     private String adressBookName;
 
-
+    // prints address book this way
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "AddressBook [adressBookName=" + adressBookName + "]";
     }
 
-
+    // passes address book where ever called
     public String getAdressBookName() {
         return adressBookName;
     }
 
-
+    // sets addressBookName
     public void setAdressBookName(String adressBookName) {
         this.adressBookName = adressBookName;
     }
-    public String nameString = this.adressBookName+".txt";
+
+    // gives name of file
+    public String nameString = this.adressBookName + ".txt";
+
+    // writes contacts into a text file
     public void write() {
-        AddressBookFileIO.writeData(contactBook, this.adressBookName+".txt");
+        AddressBookFileIO.writeData(contactBook, this.adressBookName + ".txt");
     }
 
+    // reads data from text file
     public List<String> read() {
         return AddressBookFileIO.readDataFromFile(this.adressBookName);
     }
 
-    public void addContacts()
-    {
+    //adds new contact
+    public void addContacts() {
         System.out.println("Enter Person details:");
 
         ContactPerson person = details();
+        // checks if the same person already exists
         boolean isDuplicate = contactBook.stream().anyMatch(contact -> contact.equals(person));
-        if(isDuplicate) {
+        if (isDuplicate) {
             System.out.println("Duplicate data entry. discarded");
-        }
-        else
-        {
+        } else {
             contactBook.add(person);
-            if(personsByCity.get(person.getCity()) == null) personsByCity.put(person.getCity(), new ArrayList<>());
-            personsByCity.get(person.getCity()).add(person);
-            if(personsByState.get(person.getState()) == null) personsByState.put(person.getState(), new ArrayList<>());
-            personsByState.get(person.getState()).add(person);
+
+            if (personsByCity.get(person.getCity()) == null) {
+                personsByCity.put(person.getCity(), new ArrayList<>());
+            } else {
+                personsByCity.get(person.getCity()).add(person);
+            }
+
+            if (personsByState.get(person.getState()) == null) {
+                personsByState.put(person.getState(), new ArrayList<>());
+            } else {
+                personsByState.get(person.getState()).add(person);
+            }
         }
 
 
     }
 
-
-    public void edit()
-    {
+// edits the existing person details
+    public void edit() {
         System.out.println("enter the name to edit contact details");
         String name = sc.next();
         System.out.println("enter the choice to edit details");
         System.out.println("1.First Name\\n2.Last Name\\n3.City\\n4.State\\n5.Zip Code\\n6.Phone\\n7.Email");
         int choice = sc.nextInt();
-        int index =0;
-        for( index =0;index<numberOfConatcts;index++)
-            if(name.equals(contactBook.get(index).getFirstName()))
-            {
+        int index = 0;
+        for (index = 0; index < numberOfConatcts; index++)
+            if (name.equals(contactBook.get(index).getFirstName())) {
                 System.out.println("name exists , now enter the new details");
 
                 break;
-            }
-            else {
+            } else {
                 System.out.println("No contact found");
                 return;
             }
@@ -133,38 +141,40 @@ public class AddressBook {
                 break;
         }
 
-
     }
 
-    public void delete()
-    {
+    // deletes the contact by checking name
+    public void delete() {
         int index;
         System.out.println("Enter the name of the contact to delete");
         String name = sc.next();
-        for( index=0;index<numberOfConatcts;index++)
-            if(contactBook.get(index).getFirstName().equals(name)) {
+        for (index = 0; index < numberOfConatcts; index++)
+            if (contactBook.get(index).getFirstName().equals(name)) {
                 break;
             }
-        while(!contactBook.get(index+1).equals(null)) {
-            contactBook.set(index, contactBook.get(index+1));
+        while (!contactBook.get(index + 1).equals(null)) {
+            contactBook.set(index, contactBook.get(index + 1));
             index++;
         }
-        contactBook.set(index,null);
-        System.out.println("Deleted details of : "+ name);
+        contactBook.set(index, null);
+        System.out.println("Deleted details of : " + name);
     }
-    public void display()
-    {
+
+    // prints the person details by using name entered
+    public void display() {
         ContactPerson person;
         System.out.println("Enter name to see details");
         String name = sc.next();
 
-        for(int i = 0;i<contactBook.size();i++) {
-            if(contactBook.get(i).getFirstName().equals(name)) {
+        for (int i = 0; i < contactBook.size(); i++) {
+            if (contactBook.get(i).getFirstName().equals(name)) {
                 person = contactBook.get(i);
                 System.out.println(person);
             }
         }
     }
+
+    // gives a new person object by getting input from user
     private static ContactPerson details() {
         Scanner sc = new Scanner(System.in);
         ContactPerson person1 = new ContactPerson();
@@ -187,78 +197,94 @@ public class AddressBook {
         person1.setEmail(sc.next());
         return person1;
     }
-    public void searchByCity(String city,String firstName) {
-        Predicate<ContactPerson> searchPerson = (contact -> contact.getCity().equals(city)&& contact.getFirstName().equals(firstName));
+
+    // search the person using name and city
+    public void searchByCity(String city, String firstName) {
+        Predicate<ContactPerson> searchPerson = (contact -> contact.getCity().equals(city) && contact.getFirstName().equals(firstName));
         contactBook.stream().filter(searchPerson).forEach(person -> output(person));
     }
 
+    // search the person using name and state
     public void searchByState(String state, String firstName) {
-        Predicate<ContactPerson> searchPerson = (contact -> contact.getState().equals(state)&& contact.getFirstName().equals(firstName));
+        Predicate<ContactPerson> searchPerson = (contact -> contact.getState().equals(state) && contact.getFirstName().equals(firstName));
         contactBook.stream().filter(searchPerson).forEach(person -> output(person));
     }
+
+    // give list of persons in city
     public void personsInCity(String city) {
         ArrayList<ContactPerson> list = personsByCity.get(city);
         list.forEach(AddressBook::output);
     }
 
+    // give list of persons in state
     public void personsInState(String State) {
         ArrayList<ContactPerson> list = personsByState.get(State);
         list.stream().forEach(person -> output(person));
     }
-    public  void sortByFirstName() {
+
+    // sorting by name
+    public void sortByFirstName() {
         contactBook.stream()
-                .sorted((contact1,contact2) -> contact1.getFirstName().compareTo(contact2.getFirstName()))
-                .forEach(System.out::println);
-    }
-    public  void sortByZip() {
-        contactBook.stream()
-                .sorted((contact1,contact2) -> contact1.getZip()-contact2.getZip())
-                .forEach(System.out::println);
-    }
-    public  void sortByCity() {
-        contactBook.stream()
-                .sorted((contact1,contact2) -> contact1.getCity().compareTo(contact2.getCity()))
-                .forEach(System.out::println);
-    }
-    public  void sortByState() {
-        contactBook.stream()
-                .sorted((contact1,contact2) -> contact1.getState().compareTo(contact2.getState()))
+                .sorted((contact1, contact2) -> contact1.getFirstName().compareTo(contact2.getFirstName()))
                 .forEach(System.out::println);
     }
 
+    // sorting by zip
+    public void sortByZip() {
+        contactBook.stream()
+                .sorted((contact1, contact2) -> contact1.getZip() - contact2.getZip())
+                .forEach(System.out::println);
+    }
+
+    // sorting by city
+    public void sortByCity() {
+        contactBook.stream()
+                .sorted((contact1, contact2) -> contact1.getCity().compareTo(contact2.getCity()))
+                .forEach(System.out::println);
+    }
+
+    // sorting by state
+    public void sortByState() {
+        contactBook.stream()
+                .sorted((contact1, contact2) -> contact1.getState().compareTo(contact2.getState()))
+                .forEach(System.out::println);
+    }
+
+    // prints the person
     private static void output(ContactPerson person) {
-        System.out.println("firstName : "+person.getFirstName());
-        System.out.println("SecondName : "+ person.getLastName());
-        System.out.println("Address : "+ person.getAddress());
-        System.out.println("City : "+person.getCity());
-        System.out.println("State : "+person.getState());
-        System.out.println("Pin code : "+person.getZip());
-        System.out.println("Phone nmber : "+person.getPhoneNumber() );
-        System.out.println("email : "+person.getEmail());
+        System.out.println("firstName : " + person.getFirstName());
+        System.out.println("SecondName : " + person.getLastName());
+        System.out.println("Address : " + person.getAddress());
+        System.out.println("City : " + person.getCity());
+        System.out.println("State : " + person.getState());
+        System.out.println("Pin code : " + person.getZip());
+        System.out.println("Phone nmber : " + person.getPhoneNumber());
+        System.out.println("email : " + person.getEmail());
     }
 
+    // write data to CSV file
     public void writeDataToCSV() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
 
-        String fileName = "./"+this.adressBookName+"Contacts.csv";
+        String fileName = "./" + this.adressBookName + "Contacts.csv";
         try (Writer writer = Files.newBufferedWriter(Paths.get(fileName));) {
 
             StatefulBeanToCsvBuilder<ContactPerson> builder = new StatefulBeanToCsvBuilder<>(writer);
             StatefulBeanToCsv<ContactPerson> beanWriter = builder.build();
-            ArrayList<ContactPerson> listOfContacts= contactBook.stream().collect(Collectors.toCollection(ArrayList::new));
+            ArrayList<ContactPerson> listOfContacts = contactBook.stream().collect(Collectors.toCollection(ArrayList::new));
             beanWriter.write(listOfContacts);
             writer.close();
             System.out.println("Written !");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // reads data from CSVfile
     public <Exception extends Throwable> void readDataFromCSV() throws IOException, Exception {
 
-        String fileName = "./"+this.adressBookName+"Contacts.csv";
+        String fileName = "./" + this.adressBookName + "Contacts.csv";
         try (Reader reader = Files.newBufferedReader(Paths.get(fileName));
-             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();){
+             CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();) {
 
             String[] nextRecord;
             while ((nextRecord = csvReader.readNext()) != null) {
@@ -274,6 +300,7 @@ public class AddressBook {
         }
     }
 
+    // write data to Json file
     public void writeDataToJson() throws IOException {
 
         String fileName = "./" + this.adressBookName + ".json";
@@ -286,10 +313,11 @@ public class AddressBook {
 
     }
 
+    // read data from json file
     public void readDataFromJson() throws IOException {
 
         ArrayList<ContactPerson> contactList;
-        String fileName = "./"+this.adressBookName+".json";
+        String fileName = "./" + this.adressBookName + ".json";
         Path filePath = Paths.get(fileName);
 
         try (Reader reader = Files.newBufferedReader(filePath)) {

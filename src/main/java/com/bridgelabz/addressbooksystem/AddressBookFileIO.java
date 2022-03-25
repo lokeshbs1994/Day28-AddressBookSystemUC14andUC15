@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddressBookFileIO {
+    // write data into txt file
     public static void writeData(List<ContactPerson> addressBook, String filename) {
 
         StringBuffer addressBookBuffer = new StringBuffer();
@@ -25,6 +26,7 @@ public class AddressBookFileIO {
 
     }
 
+    //read data from text file
     public static List<String> readDataFromFile(String filename) {
 
         List<String> addressBookList = new ArrayList<String>();
@@ -45,6 +47,7 @@ public class AddressBookFileIO {
         return addressBookList;
     }
 
+    // prints person in console
     public void display(String fileName) {
 
         try {
@@ -55,6 +58,7 @@ public class AddressBookFileIO {
 
     }
 
+    // counts files
     public long countEntries(String fileName) {
 
         long entries = 0;

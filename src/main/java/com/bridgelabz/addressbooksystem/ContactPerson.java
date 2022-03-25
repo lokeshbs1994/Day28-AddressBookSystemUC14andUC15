@@ -1,5 +1,6 @@
 package com.bridgelabz.addressbooksystem;
 
+//creates contact objects
 public class ContactPerson {
     private String firstName;
     private String lastName;
@@ -10,6 +11,7 @@ public class ContactPerson {
     private int zip;
     private String phoneNumber;
 
+    //constructor
     public ContactPerson(String firstName, String lastName, String address, String city, String state, String email,
                          int zip, String phoneNumber) {
         super();
@@ -23,6 +25,7 @@ public class ContactPerson {
         this.phoneNumber = phoneNumber;
     }
 
+    // non-param constructor
     public ContactPerson() {
         // TODO Auto-generated constructor stub
     }
@@ -87,6 +90,11 @@ public class ContactPerson {
         this.zip = zip;
     }
 
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    // prints contacts this way
     @Override
     public String toString() {
         return "ContactPerson [firstName=" + firstName + ", lastName=" + lastName + ", address=" + address + ", city="
@@ -94,10 +102,7 @@ public class ContactPerson {
                 + "]";
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
+    // equals method
     @Override
     public boolean equals(Object object) {
         if (object == this)

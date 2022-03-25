@@ -15,29 +15,32 @@ public class AddressBookMain {
     private static int  numOfBooks =0;
     public static AddressBookFileIO addressBookFileIO = new AddressBookFileIO();
 
+    // checks if the address book with name exits or not
     private boolean checkName(String name) {
         for(int i=0;i<addressBooks.size();i++) {
-            if(addressBookName[i].equals(name)) return true;
+            if(addressBookName[i].equals(name))
+                return true;
         }
         return false;
     }
 
+    // shows menu of operations to user and gets input
     private static void addressMenu(AddressBook addressBook) throws Exception {
         Scanner sc = new Scanner(System.in);
         int option = 0;
         boolean exit = true;
         while(exit) {
-            System.out.println("Select option 1: add user.  2: edit existing user.  "
-                    + "3: display all users 4:Delete contact. 5:seach userby city "
-                    + "6: search user by state 7:view by city 8:view by state"
-                    + " 9: sort by name 10:sort by zip 11: sort by city "
-                    + "12: sort by state 13:Switch Address Book"
-                    + "13: Write to file"
-                    + "14. Read from file"
-                    + "15. Write to CSV"
-                    + "16. Read from CSV"
-                    + "17. Write to JSON"
-                    + "18. Read from JSON");
+            System.out.println("Select option\n 1: add user. \n 2: edit existing user."
+                    + "\n 3: display all users \n 4:Delete contact. \n 5:seach userby city "
+                    + "\n 6: search user by state. \n 7:view by city \n 8:view by state"
+                    + "\n 9: sort by name \n 10:sort by zip \n 11: sort by city "
+                    + "\n 12: sort by state \n 13:Switch Address Book"
+                    + "\n 13: Write to file"
+                    + "\n 14. Read from file"
+                    + "\n 15. Write to CSV"
+                    + "\n 16. Read from CSV"
+                    + "\n 17. Write to JSON"
+                    + "\n 18. Read from JSON");
             option  = sc.nextInt();
             switch(option) {
                 case 1 :
@@ -138,6 +141,7 @@ public class AddressBookMain {
         }
     }
 
+    // main method initially ask user to add new book or open existing book
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to address book program");
         Scanner sc = new Scanner(System.in);
